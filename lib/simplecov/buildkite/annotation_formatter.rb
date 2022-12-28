@@ -53,13 +53,17 @@ module SimpleCov::Buildkite
       end
 
       if ENV['BUILDKITE']
-        system 'buildkite-agent',
-               'annotate',
-               '--context', 'simplecov',
-               '--style', 'info',
-               message
+        file = File.open("/tmp/simplecov.txt", "w")
+        file.write(message)
+        file.close
+
+        #system 'buildkite-agent',
+               #'annotate',
+               #'--context', 'simplecov',
+               #'--style', 'info',
+               #message
       else
-        puts message
+        # puts message
       end
     end
 
@@ -98,7 +102,7 @@ module SimpleCov::Buildkite
 
       metric += <<~METRIC_VALUE
 
-        **<span class="h2 regular">#{format_float(element.covered_percent)}</span>%**  
+        **<span class="h2 regular">#{format_float(element.covered_percent)}</span>%**
         #{format_line_count(element)}
 
       METRIC_VALUE
